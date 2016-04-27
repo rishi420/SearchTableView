@@ -19,3 +19,14 @@ Steps:
  5. Return `itemList.count` in numberOfRowsInSection
  6. Implement `searchPropertyName()` of `SearchTableViewDataSource` protocol
  7. return `itemList` objects' `property` name you want to search for.
+
+## Known Issue
+There is an issue of searchBar overlaps statusBar. Steps to reproduce this issue:
+ 1. Users search  
+ 2. Tap on any search result
+ 3. Navigate to another viewController 
+ 4. Then change device orientation
+ 5. Back
+
+This could be an apple bug. Apple sample code also has this issue <br>
+ https://developer.apple.com/library/ios/samplecode/TableSearch_UISearchController/Introduction/Intro.html
