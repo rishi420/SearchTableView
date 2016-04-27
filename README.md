@@ -15,10 +15,11 @@ Steps:
  1. Change `UITableView` class to `SearchTableView` in storyBoard.
  2. Make an `@IBOutlet` of `SearchTableView` in your viewController
  3. Conform to `searchDataSource` protocol
- 4. Assign array or objects in `itemList`
- 5. Return `itemList.count` in numberOfRowsInSection
- 6. Implement `searchPropertyName()` of `SearchTableViewDataSource` protocol
- 7. return `itemList` objects' `property` name you want to search for.
+ 4. Create model object, subclass of `NSObject`
+ 5. Assign array of model objects in `itemList`
+ 6. Return `itemList.count` from numberOfRowsInSection
+ 7. Implement `searchPropertyName()` of `SearchTableViewDataSource` protocol
+ 8. return model object's `property` name you want to search for.
 
 ## Known Issue
 There is an issue of searchBar overlaps statusBar. Steps to reproduce this issue:
