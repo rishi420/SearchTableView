@@ -12,10 +12,10 @@ Just drag and drop `SearchTableView.swift` file in your project
 
 ## Usage
 Steps:
-1. Change `UITableView` class to `SearchTableView` in storyBoard.
-2. Make an `@IBOutlet` of `SearchTableView` in your viewController
-3. Conform to `searchDataSource` protocol
-4. Assign array or objects in `itemList`
-5. Return `itemList.count` in numberOfRowsInSection
-6. Implement `searchPropertyName()` of `SearchTableViewDataSource` protocol
-7. return `itemList` objects' `property` name you want to search for.
+ 1. Change `UITableView` class to `SearchTableView` in storyBoard.
+ 2. Make an `@IBOutlet` of `SearchTableView` in your viewController
+ 3. Conform to `searchDataSource` protocol
+ 4. Assign array or objects in `itemList`
+ 5. Return `itemList.count` in numberOfRowsInSection
+ 6. Implement `searchPropertyName()` of `SearchTableViewDataSource` protocol
+ 7. return `itemList` objects' `property` name you want to search for.
