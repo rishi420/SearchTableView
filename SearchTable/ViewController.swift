@@ -15,8 +15,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchTableView.layoutMargins = UIEdgeInsetsZero
-        searchTableView.separatorInset = UIEdgeInsetsZero
+        searchTableView.layoutMargins = UIEdgeInsets.zero
+        searchTableView.separatorInset = UIEdgeInsets.zero
         definesPresentationContext = true
         extendedLayoutIncludesOpaqueBars = true
         searchTableView.searchDataSource = self
@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         searchTableView.itemList = createProjectList()
     }
 
-    private func createProjectList() -> [Project] {
+    fileprivate func createProjectList() -> [Project] {
         var projectList = [Project]()
         for i in 0..<30 {
             projectList.append(Project(projectId: i+1, name: "Project \(i+1)"))
@@ -39,16 +39,16 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDataSource {
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchTableView.itemList.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("ProjectListCell", forIndexPath: indexPath)
-        let project = searchTableView.itemList[indexPath.row] as! Project
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectListCell", for: indexPath)
+        let project = searchTableView.itemList[(indexPath as NSIndexPath).row] as! Project
         cell.textLabel?.text = project.name
-        cell.layoutMargins = UIEdgeInsetsZero
+        cell.layoutMargins = UIEdgeInsets.zero
         
         return cell
     }

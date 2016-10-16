@@ -24,9 +24,9 @@ class SearchTableView : UITableView {
     
     var searchDataSource: SearchTableViewDataSource?
     
-    private var items = [AnyObject]()
+    fileprivate var items = [AnyObject]()
     
-    private var searchProperty : String {
+    fileprivate var searchProperty : String {
         
         guard let searchDataSource = searchDataSource else {
             return ""
@@ -35,8 +35,8 @@ class SearchTableView : UITableView {
         return searchDataSource.searchPropertyName()
     }
     
-    private var filteredItems = [AnyObject]()
-    private let searchController = UISearchController(searchResultsController: .None)
+    fileprivate var filteredItems = [AnyObject]()
+    fileprivate let searchController = UISearchController(searchResultsController: .none)
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -44,32 +44,32 @@ class SearchTableView : UITableView {
         setup()
     }
     
-    private func setup() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+    fileprivate func setup() {
+        DispatchQueue.main.async { () -> Void in
             self.searchController.dimsBackgroundDuringPresentation = false
             self.searchController.searchResultsUpdater = self
             self.searchController.searchBar.sizeToFit()
             self.tableHeaderView = self.searchController.searchBar
-            let contentOffset = CGPointMake(0.0, self.contentOffset.y + self.searchController.searchBar.frame.height)
+            let contentOffset = CGPoint(x: 0.0, y: self.contentOffset.y + self.searchController.searchBar.frame.height)
             self.setContentOffset(contentOffset, animated: false)
         }
     }
     
-    private func getDataSource() -> [AnyObject] {
-        return (searchController.active) ? filteredItems : items
+    fileprivate func getDataSource() -> [AnyObject] {
+        return (searchController.isActive) ? filteredItems : items
     }
 }
 
 extension SearchTableView: UISearchResultsUpdating {
     
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         // Update the filtered array based on the search text.
         let searchResults = items
         
         // Strip out all the leading and trailing spaces.
-        let whitespaceCharacterSet = NSCharacterSet.whitespaceCharacterSet()
-        let strippedString = searchController.searchBar.text!.stringByTrimmingCharactersInSet(whitespaceCharacterSet)
-        let searchItems = strippedString.componentsSeparatedByString(" ") as [String]
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString = searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
         
         // Build all the "AND" expressions for each value in the searchString.
         let andMatchPredicates: [NSPredicate] = searchItems.map { searchString in
@@ -84,13 +84,13 @@ extension SearchTableView: UISearchResultsUpdating {
             let titleExpression = NSExpression(forKeyPath: searchProperty)
             let searchStringExpression = NSExpression(forConstantValue: searchString)
             
-            let titleSearchComparisonPredicate = NSComparisonPredicate(leftExpression: titleExpression, rightExpression: searchStringExpression, modifier: .DirectPredicateModifier, type: .ContainsPredicateOperatorType, options: .CaseInsensitivePredicateOption)
+            let titleSearchComparisonPredicate = NSComparisonPredicate(leftExpression: titleExpression, rightExpression: searchStringExpression, modifier: .direct, type: .contains, options: .caseInsensitive)
             
             searchItemsPredicate.append(titleSearchComparisonPredicate)
             
-            let numberFormatter = NSNumberFormatter()
-            numberFormatter.numberStyle = .NoStyle
-            numberFormatter.formatterBehavior = .BehaviorDefault
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .none
+            numberFormatter.formatterBehavior = .default
             
             // Add this OR predicate to our master AND predicate.
             let orMatchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates:searchItemsPredicate)
@@ -101,7 +101,7 @@ extension SearchTableView: UISearchResultsUpdating {
         // Match up the fields of the Product object.
         let finalCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: andMatchPredicates)
         
-        let filteredResults = searchResults.filter { finalCompoundPredicate.evaluateWithObject($0) }
+        let filteredResults = searchResults.filter { finalCompoundPredicate.evaluate(with: $0) }
         
         // Hand over the filtered results to our search results table.
         //let resultsController = searchController.searchResultsController as! ProjectListViewController
