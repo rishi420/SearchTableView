@@ -32,6 +32,16 @@ class ViewController: UIViewController {
         return projectList
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowDetails" {
+            guard let indexPath = searchTableView.indexPathForSelectedRow,
+                let selectedProject = searchTableView.itemList[indexPath.row] as? Project else {
+                    return
+            }
+            segue.destination.title = selectedProject.name
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -60,4 +70,3 @@ extension ViewController : SearchTableViewDataSource {
         return "name"
     }
 }
-
